@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Hunter: Strategic Farming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+    </style>
+</head>
+<body class="bg-[#050505] text-white p-6 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6 border-b border-gray-800 pb-8">
+            <h1 id="main-title" class="text-3xl font-black text-blue-400">🌊 River PTS x satUSD Farming</h1>
+            <div class="flex gap-2">
+                <button onclick="changeLang('ko')" class="px-3 py-1 bg-blue-600/20 border border-blue-500/50 rounded text-xs">🇰🇷 KO</button>
+                <button onclick="changeLang('en')" class="px-3 py-1 bg-gray-800 border border-gray-600 rounded text-xs">🇺🇸 EN</button>
+                <button onclick="changeLang('zh')" class="px-3 py-1 bg-red-900/20 border border-red-500/50 rounded text-xs">🇨🇳 ZH</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-2 p-8 border border-gray-800 rounded-3xl bg-[#0d0d0d] shadow-xl">
+                <h2 id="lp-title" class="text-xl font-bold mb-8 text-gray-300 italic">"거래 수수료보다 '인센티브 포인트' 채굴에 집중할 시기입니다"</h2>
+                <div class="flex items-center justify-center gap-4 mb-10">
+                    <div class="w-14 h-14 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold">sat</div>
+                    <span class="text-xl text-gray-600">+</span>
+                    <div class="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">USDC</div>
+                    <span class="text-xl text-gray-600">=</span>
+                    <div class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 font-black">LP POOL</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-black/40 rounded-xl border border-gray-800">
+                        <p id="apr-label" class="text-gray-500 text-xs mb-1">Incentive APR</p>
+                        <p class="text-2xl font-black text-green-400">420.67%*</p>
+                    </div>
+                    <div class="p-4 bg-black/40 rounded-xl border border-gray-800">
+                        <p id="boost-label" class="text-gray-500 text-xs mb-1">Boost Multiplier</p>
+                        <p class="text-2xl font-black text-blue-400">25x Points</p>
+                    </div>
+                </div>
+                <p id="disclaimer" class="text-[10px] text-gray-600 mt-4 leading-relaxed">
+                    * 이 수익률은 거래 수수료가 아닌 프로토콜 인센티브(포인트 부스트)가 결합된 수치입니다.
+                </p>
+            </div>
+
+            <div class="p-8 border border-gray-800 rounded-3xl bg-[#0d0d0d]">
+                <h3 id="calc-title" class="text-lg font-bold mb-6">💰 전략 분석</h3>
+                <ul class="text-sm space-y-4 text-gray-400">
+                    <li id="point1">• 스테이블 페어로 자산 가치 보호</li>
+                    <li id="point2">• River PTS 및 Satoshi 포인트 동시 적립</li>
+                    <li id="point3">• 초기 선점을 통한 포인트 효율 극대화</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="https://app.uniswap.org/explore/pools/base/0x23b8fa58f76cfd336bb9a590ae31efead94639de026ee738246543bc542ce009" 
+               target="_blank"
+               class="inline-block bg-white text-black font-black py-4 px-12 rounded-full text-lg hover:bg-gray-200 transition-transform hover:scale-105">
+                Get River PTS Now (Uniswap)
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ko: {
+                title: "🌊 River PTS x satUSD Farming",
+                lp: '"거래 수수료보다 \'인센티브 포인트\' 채굴에 집중할 시기입니다"',
+                apr: "인센티브 APR", boost: "포인트 부스트", calc: "💰 전략 분석",
+                p1: "• 스테이블 페어로 자산 가치 보호", p2: "• River PTS 및 Satoshi 포인트 동시 적립", p3: "• 초기 선점을 통한 포인트 효율 극대화",
+                disc: "* 이 수익률은 거래 수수료가 아닌 프로토콜 인센티브(포인트 부스트)가 결합된 수치입니다."
+            },
+            en: {
+                title: "🌊 River PTS x satUSD Farming",
+                lp: '"Focus on Incentive Farming over Trading Fees"',
+                apr: "Incentive APR", boost: "Boost Multiplier", calc: "💰 Strategy Analysis",
+                p1: "• Protect assets with stable pairs", p2: "• Earn River PTS & Satoshi points", p3: "• Maximize efficiency with early entry",
+                disc: "* This APR is based on protocol incentives, not organic trading volume."
+            },
+            zh: {
+                title: "🌊 River PTS x satUSD 挖矿报告",
+                lp: '"当前重点应放在积分激励而非交易手续费"',
+                apr: "激励年化收益率", boost: "积分加速倍数", calc: "💰 策略分析",
+                p1: "• 通过稳定币对保护资产价值", p2: "• 同时赚取 River PTS 和 Satoshi 积分", p3: "• 通过早期参与最大化积分效率",
+                disc: "* 该年化收益率基于协议奖励，而非有机交易量。"
+            }
+        };
+        function changeLang(lang) {
+            const t = translations[lang];
+            document.getElementById('main-title').innerText = t.title;
+            document.getElementById('lp-title').innerText = t.lp;
+            document.getElementById('apr-label').innerText = t.apr;
+            document.getElementById('boost-label').innerText = t.boost;
+            document.getElementById('calc-title').innerText = t.calc;
+            document.getElementById('point1').innerText = t.p1;
+            document.getElementById('point2').innerText = t.p2;
+            document.getElementById('point3').innerText = t.p3;
+            document.getElementById('disclaimer').innerText = t.disc;
+        }
+    </script>
+</body>
+</html>
