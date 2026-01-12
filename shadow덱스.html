@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Hunter: Strategic Safety Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; letter-spacing: -0.02em; word-break: keep-all; }
+        .active-lang { background-color: rgba(59, 130, 246, 0.4); border-color: rgba(59, 130, 246, 0.8); }
+        .risk-alert { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-[#050505] text-white p-4 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-800 pb-6">
+            <div>
+                <h1 id="main-title" class="text-2xl md:text-3xl font-black text-blue-400 uppercase tracking-tight">🌊 River Protocol Safety Monitor</h1>
+                <p id="last-updated-date" class="text-[10px] md:text-xs text-gray-500 mt-2 font-medium"></p>
+            </div>
+            <div class="flex gap-2">
+                <button id="btn-ko" onclick="changeLang('ko')" class="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-[10px] active-lang font-bold">KR</button>
+                <button id="btn-en" onclick="changeLang('en')" class="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-[10px] font-bold">US</button>
+                <button id="btn-zh" onclick="changeLang('zh')" class="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-[10px] font-bold">CN</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-10">
+            <div class="lg:col-span-2 p-6 md:p-8 border border-gray-800 rounded-3xl bg-[#0d0d0d] shadow-xl relative overflow-hidden flex flex-col justify-center">
+                <div id="safety-status" class="absolute top-4 right-4 px-3 py-1 bg-green-900/30 border border-green-500/50 rounded-full text-[10px] font-bold text-green-400">
+                    ● SAFETY OK
+                </div>
+                <h2 id="lp-subtitle" class="text-base md:text-xl font-bold mb-8 text-gray-300 italic">"거래 수수료보다 River PTS 채굴에 집중할 시기입니다"</h2>
+                
+                <div class="flex items-center justify-center gap-4 mb-10">
+                    <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] text-xs">sat</div>
+                    <span class="text-lg text-gray-600">+</span>
+                    <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(59,130,246,0.3)] text-xs">USDC</div>
+                    <span class="text-lg text-gray-600">=</span>
+                    <div class="px-4 py-2 rounded-lg bg-blue-700 font-black text-xs uppercase tracking-widest">Satusd LP</div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-black/40 rounded-xl border border-gray-800 text-center">
+                        <p id="label-apr" class="text-gray-500 text-[10px] mb-1 font-semibold uppercase tracking-widest">Base APR</p>
+                        <p class="text-2xl md:text-4xl font-black text-green-400 tracking-tighter">29.00%*</p>
+                    </div>
+                    <div class="p-4 bg-black/40 rounded-xl border border-gray-800 text-center">
+                        <p id="label-boost" class="text-gray-500 text-[10px] mb-1 font-semibold uppercase tracking-widest">River Boost</p>
+                        <p class="text-2xl md:text-4xl font-black text-blue-400 tracking-tighter">25x PTS</p>
+                    </div>
+                </div>
+                <p id="disclaimer" class="text-[9px] text-gray-600 mt-5 italic">* Shadow Dex 기초 인센티브(Real Yield) 데이터 기반 분석치입니다.</p>
+            </div>
+
+            <div class="lg:col-span-1 p-6 md:p-8 border border-gray-800 rounded-3xl bg-[#0d0d0d] flex flex-col justify-between shadow-xl min-h-[300px]">
+                <div>
+                    <h3 id="label-strategy" class="text-base md:text-lg font-black mb-6 text-orange-400 flex items-center gap-2">🛡️ 실시간 모니터링</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800">
+                            <p class="text-[9px] font-bold text-gray-500 uppercase mb-2 tracking-widest">Shadow Dex LP TVL</p>
+                            <span id="current-tvl" class="text-xl font-black text-white tracking-tight">$19,999</span>
+                        </div>
+                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800">
+                            <p class="text-[9px] font-bold text-gray-500 uppercase mb-2 tracking-widest">River PTS 가격 (KRW)</p>
+                            <span id="river-krw-price" class="text-xl font-black text-green-400 tracking-tight">불러오는 중...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-800 text-right">
+                    <p id="usdt-rate" class="text-[9px] text-gray-600 mb-1 font-medium italic">환율 데이터를 연결 중입니다...</p>
+                    <p class="font-bold text-blue-500 text-[10px] tracking-widest uppercase">EPOCH #51 ACTIVE</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://www.shadow.so/liquidity" target="_blank" id="cta-shadow" class="bg-blue-600 text-white font-black py-4 md:py-6 px-8 rounded-full text-sm md:text-xl text-center hover:bg-blue-500 transition-all transform hover:scale-105 shadow-2xl uppercase tracking-tighter border border-blue-500/50">
+                1. Shadow Dex 유동성 공급 (예치 - 4번째)
+            </a>
+            <a href="https://app.river.inc/staking" target="_blank" id="cta-river" class="bg-transparent text-blue-400 border-2 border-blue-500 font-black py-4 md:py-6 px-8 rounded-full text-sm md:text-xl text-center hover:bg-blue-900/20 transition-all transform hover:scale-105 shadow-2xl uppercase tracking-tighter">
+                2. River 스테이킹 공식 풀
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'ko';
+        const trans = {
+            ko: { main: "🌊 River Protocol Safety Monitor", sub: '"거래 수수료보다 River PTS 채굴에 집중할 시기입니다"', apr: "Base APR", boost: "River Boost", strat: "🛡️ 실시간 모니터링", shadow: "1. Shadow Dex 유동성 공급 (예치 - 4번째)", river: "2. River 스테이킹 공식 풀", dateSuffix: "분석 기준", disc: "* Shadow Dex 기초 인센티브(Real Yield) 데이터 기반 분석치입니다." },
+            en: { main: "🌊 River Protocol Safety Monitor", sub: '"Focus on River PTS Farming over Fees"', apr: "Base APR", boost: "River Boost", strat: "🛡️ Live Monitoring", shadow: "1. Shadow Dex Liquidity (4th Pool)", river: "2. River Official Staking Pool", dateSuffix: "Analysis Basis", disc: "* Based on Shadow Dex Real Yield data." },
+            zh: { main: "🌊 River Protocol 挖矿安全监控", sub: '"当前应专注于 River PTS 积分挖矿"', apr: "基础年化", boost: "River 加速", strat: "🛡️ 实时监控", shadow: "1. Shadow Dex 提供流动性 (第4个)", river: "2. River 官方质押池", dateSuffix: "分析基准", disc: "* 基于 Shadow Dex 基础激励数据。" }
+        };
+
+        function changeLang(lang) {
+            currentLang = lang;
+            const t = trans[lang];
+            document.getElementById('main-title').innerText = t.main;
+            document.getElementById('lp-subtitle').innerText = t.sub;
+            document.getElementById('label-apr').innerText = t.apr;
+            document.getElementById('label-boost').innerText = t.boost;
+            document.getElementById('label-strategy').innerText = t.strat;
+            document.getElementById('cta-shadow').innerText = t.shadow;
+            document.getElementById('cta-river').innerText = t.river;
+            document.getElementById('disclaimer').innerText = t.disc;
+            updateDate();
+            ['ko', 'en', 'zh'].forEach(l => document.getElementById('btn-' + l).classList.remove('active-lang'));
+            document.getElementById('btn-' + lang).classList.add('active-lang');
+        }
+
+        function updateDate() {
+            const now = new Date();
+            document.getElementById('last-updated-date').innerText = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 ${trans[currentLang].dateSuffix}`;
+        }
+
+        async function fetchMonitorData() {
+            try {
+                // 1. River PTS 시세 & 실시간 유동성 (DexScreener API)
+                const riverRes = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0xfc6be825925b7a83d131e33b46efef9084f0e014`, { cache: 'no-cache' });
+                const riverData = await riverRes.json();
+                
+                if (riverData.pairs && riverData.pairs[0]) {
+                    const usdPrice = parseFloat(riverData.pairs[0].priceUsd);
+                    const liquidity = parseFloat(riverData.pairs[0].liquidity.usd);
+                    document.getElementById('current-tvl').innerText = `$${liquidity.toLocaleString()}`;
+
+                    // 2. 빗썸 환율 API 호출
+                    const bithumbRes = await fetch('https://api.bithumb.com/public/ticker/USDT_KRW', { cache: 'no-cache' });
+                    const bithumbData = await bithumbRes.json();
+                    const rate = parseFloat(bithumbData.data.closing_price);
+                    
+                    document.getElementById('river-krw-price').innerText = `₩${(usdPrice * rate).toFixed(2)}`;
+                    document.getElementById('usdt-rate').innerText = `Bithumb USDT Rate: ₩${rate.toLocaleString()}`;
+                }
+            } catch (e) { 
+                console.error("Data Fetch Error:", e);
+                document.getElementById('river-krw-price').innerText = "업데이트 대기 중";
+            }
+        }
+
+        // 초기 실행 및 인터벌 설정
+        window.onload = () => {
+            updateDate();
+            fetchMonitorData(); // 페이지 로드 즉시 실행
+            setInterval(fetchMonitorData, 30000); // 30초마다 갱신 (더 빠르게)
+        };
+    </script>
+</body>
+</html>
